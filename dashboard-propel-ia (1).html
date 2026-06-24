@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Propel | Nonprofit Academy - Dashboard IA Certification</title>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Libre Franklin', sans-serif;
+            background: #f8f9fa;
+            color: #333;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .header-title {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .header-title .propel {
+            color: #fc5c3a;
+        }
+
+        .header-title .academy {
+            color: #2c59b7;
+        }
+
+        .stats-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #d6e2f0;
+            text-align: center;
+        }
+
+        .country-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            margin-left: 6px;
+        }
+
+        .country-ar {
+            background: #e0e8f7;
+            color: #2c59b7;
+        }
+
+        .country-cl {
+            background: #d6e2f0;
+            color: #486ec8;
+        }
+
+        .country-uy {
+            background: #ccd9e8;
+            color: #618ece;
+        }
+
+        .country-mx {
+            background: #c2d0e0;
+            color: #486ec8;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #2c59b7;
+            margin-bottom: 4px;
+        }
+
+        .stat-sub {
+            font-size: 11px;
+            color: #ccc;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            border-bottom: 1px solid #e5e5e5;
+            padding-bottom: 0;
+            overflow-x: auto;
+        }
+
+        .tab-btn {
+            padding: 12px 16px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 13px;
+            color: #999;
+            white-space: nowrap;
+            border-bottom: 3px solid transparent;
+            font-weight: 500;
+            font-family: 'Libre Franklin', sans-serif;
+            transition: all 0.2s;
+        }
+
+        .tab-btn:hover {
+            color: #2c59b7;
+        }
+
+        .tab-btn.active {
+            color: #2c59b7;
+            border-bottom-color: #fc5c3a;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .section {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #e5e5e5;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #2c59b7;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Funnel styles */
+        .funnel {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .funnel-step {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .funnel-bar {
+            height: 40px;
+            background: #2c59b7;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 12px;
+            color: white;
+            font-weight: 600;
+            font-size: 13px;
+            min-width: 150px;
+        }
+
+        .funnel-label {
+            font-size: 12px;
+            color: #666;
+            font-weight: 500;
+            min-width: 140px;
+        }
+
+        .funnel-percent {
+            font-size: 11px;
+            color: #999;
+        }
+
+        /* Table styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+
+        thead {
+            background: #f5f5f5;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        th {
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            color: #666;
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 0.4px;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr:hover {
+            background: #fafafa;
+        }
+
+        .value-primary {
+            color: #2c59b7;
+            font-weight: 600;
+        }
+
+        .value-secondary {
+            color: #486ec8;
+            font-weight: 600;
+        }
+
+        .value-accent {
+            color: #fc5c3a;
+            font-weight: 600;
+        }
+
+        /* Bar chart styles */
+        .bars-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .bar-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .bar-label {
+            font-size: 12px;
+            color: #666;
+            min-width: 120px;
+            font-weight: 500;
+        }
+
+        .bar-wrapper {
+            flex: 1;
+            background: #f0f0f0;
+            height: 28px;
+            border-radius: 4px;
+            position: relative;
+        }
+
+        .bar-fill {
+            height: 100%;
+            background: #2c59b7;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 10px;
+            font-size: 11px;
+            color: white;
+            font-weight: 600;
+        }
+
+        /* Metrics grid */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+        }
+
+        .metric-box {
+            background: #f8f9fa;
+            padding: 16px;
+            border-radius: 6px;
+            border: 1px solid #e5e5e5;
+        }
+
+        .metric-label {
+            font-size: 11px;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2c59b7;
+        }
+
+        /* Explanation box */
+        .explanation-box {
+            background: #f0f7ff;
+            padding: 14px;
+            border-radius: 6px;
+            border-left: 3px solid #fc5c3a;
+            font-size: 12px;
+            color: #666;
+            line-height: 1.6;
+            margin-top: 12px;
+        }
+
+        .explanation-box strong {
+            color: #2c59b7;
+        }
+
+        /* Tooltip */
+        .tooltip {
+            position: relative;
+            display: inline;
+            border-bottom: 1px dotted #fc5c3a;
+            cursor: help;
+            color: #fc5c3a;
+            font-weight: 600;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 220px;
+            background-color: #2c59b7;
+            color: white;
+            text-align: left;
+            border-radius: 4px;
+            padding: 10px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -110px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 11px;
+            font-weight: 400;
+            white-space: normal;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 12px;
+                align-items: flex-start;
+            }
+
+            .stats-overview {
+                grid-template-columns: 1fr;
+            }
+
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tabs {
+                gap: 6px;
+            }
+
+            .tab-btn {
+                padding: 8px 12px;
+                font-size: 11px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-title">
+                <span class="propel">Propel</span> | <span class="academy">Nonprofit Academy</span>
+                <div style="font-size: 12px; color: #999; margin-top: 4px;">Dashboard Certificación en IA</div>
+            </div>
+        </div>
+
+        <div class="stats-overview">
+            <div class="stat-card">
+                <div class="stat-label">Registrados al workshop</div>
+                <div class="stat-value">300</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Certificados</div>
+                <div class="stat-value" style="color: #fc5c3a;">48</div>
+                <div class="stat-sub">16% completación</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Asistentes workshop</div>
+                <div class="stat-value">100</div>
+                <div class="stat-sub">33% de registrados</div>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab(event, 'kpis')">KPIs Principales</button>
+            <button class="tab-btn" onclick="switchTab(event, 'aliados')">Aliados</button>
+            <button class="tab-btn" onclick="switchTab(event, 'emails')">Rendimiento de Correos</button>
+            <button class="tab-btn" onclick="switchTab(event, 'pauta')">Pauta Pagada</button>
+            <button class="tab-btn" onclick="switchTab(event, 'google')">Métricas Google</button>
+            <button class="tab-btn" onclick="switchTab(event, 'workshops')">Workshops</button>
+        </div>
+
+        <!-- KPIs Tab -->
+        <div id="kpis" class="tab-content active">
+            <div class="section">
+                <div class="section-title">Funnel de Certificación</div>
+                <div class="funnel">
+                    <div class="funnel-step">
+                        <div class="funnel-bar" style="width: 100%;">
+                            <span>300</span>
+                            <span>Registrados</span>
+                        </div>
+                        <div class="funnel-percent">100%</div>
+                    </div>
+                    <div class="funnel-step">
+                        <div class="funnel-bar" style="width: 73%; background: #486ec8;">
+                            <span>218</span>
+                            <span>Iniciaron cert</span>
+                        </div>
+                        <div class="funnel-percent">73%</div>
+                    </div>
+                    <div class="funnel-step">
+                        <div class="funnel-bar" style="width: 54%; background: #618ece;">
+                            <span>162</span>
+                            <span>Terminaron Curso 1</span>
+                        </div>
+                        <div class="funnel-percent">54%</div>
+                    </div>
+                    <div class="funnel-step">
+                        <div class="funnel-bar" style="width: 36%; background: #f4945c;">
+                            <span>108</span>
+                            <span>Terminaron Curso 2</span>
+                        </div>
+                        <div class="funnel-percent">36%</div>
+                    </div>
+                    <div class="funnel-step">
+                        <div class="funnel-bar" style="width: 16%; background: #fc5c3a;">
+                            <span>48</span>
+                            <span>Certificados</span>
+                        </div>
+                        <div class="funnel-percent">16%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Aliados Tab -->
+        <div id="aliados" class="tab-content">
+            <div class="section">
+                <div class="section-title">Desempeño por Aliado</div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Aliado</th>
+                            <th style="text-align: center;">País</th>
+                            <th style="text-align: center;">Clicks</th>
+                            <th style="text-align: center;">Registrados</th>
+                            <th style="text-align: center;">Asistentes</th>
+                            <th style="text-align: center;">Conv %</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Wingu</strong></td>
+                            <td style="text-align: center;"><span class="country-badge country-ar">AR</span></td>
+                            <td style="text-align: center;">35</td>
+                            <td style="text-align: center;" class="value-primary">24</td>
+                            <td style="text-align: center;" class="value-secondary">18</td>
+                            <td style="text-align: center;" class="value-accent">51%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Latimpacto</strong></td>
+                            <td style="text-align: center;"><span class="country-badge country-ar">AR</span></td>
+                            <td style="text-align: center;">28</td>
+                            <td style="text-align: center;" class="value-primary">19</td>
+                            <td style="text-align: center;" class="value-secondary">14</td>
+                            <td style="text-align: center;" class="value-accent">50%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>RACI</strong></td>
+                            <td style="text-align: center;"><span class="country-badge country-ar">AR</span></td>
+                            <td style="text-align: center;">21</td>
+                            <td style="text-align: center;" class="value-primary">14</td>
+                            <td style="text-align: center;" class="value-secondary">11</td>
+                            <td style="text-align: center;" class="value-accent">52%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Potenciar Solidario</strong></td>
+                            <td style="text-align: center;"><span class="country-badge country-ar">AR</span></td>
+                            <td style="text-align: center;">18</td>
+                            <td style="text-align: center;" class="value-primary">12</td>
+                            <td style="text-align: center;" class="value-secondary">9</td>
+                            <td style="text-align: center;" class="value-accent">50%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>GDFE</strong></td>
+                            <td style="text-align: center;"><span class="country-badge country-ar">AR</span></td>
+                            <td style="text-align: center;">12</td>
+                            <td style="text-align: center;" class="value-primary">8</td>
+                            <td style="text-align: center;" class="value-secondary">6</td>
+                            <td style="text-align: center;" class="value-accent">50%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Mustakis</strong></td>
+                            <td style="text-align: center;"><span class="country-badge country-cl">CL</span></td>
+                            <td style="text-align: center;">16</td>
+                            <td style="text-align: center;" class="value-primary">11</td>
+                            <td style="text-align: center;" class="value-secondary">8</td>
+                            <td style="text-align: center;" class="value-accent">50%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>COS</strong></td>
+                            <td style="text-align: center;"><span class="country-badge country-cl">CL</span></td>
+                            <td style="text-align: center;">10</td>
+                            <td style="text-align: center;" class="value-primary">7</td>
+                            <td style="text-align: center;" class="value-secondary">5</td>
+                            <td style="text-align: center;" class="value-accent">50%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Red de Fundaciones Donantes</strong></td>
+                            <td style="text-align: center;"><span class="country-badge country-cl">CL</span></td>
+                            <td style="text-align: center;">8</td>
+                            <td style="text-align: center;" class="value-primary">5</td>
+                            <td style="text-align: center;" class="value-secondary">4</td>
+                            <td style="text-align: center;" class="value-accent">50%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="section">
+                <div class="section-title">Resumen por País</div>
+                <div class="metrics-grid">
+                    <div class="metric-box">
+                        <div class="metric-label">Argentina</div>
+                        <div class="metric-value" style="color: #2c59b7;">114</div>
+                        <div style="font-size: 11px; color: #999; margin-top: 4px;">registrados (5 aliados)</div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="metric-label">Chile</div>
+                        <div class="metric-value" style="color: #486ec8;">34</div>
+                        <div style="font-size: 11px; color: #999; margin-top: 4px;">registrados (3 aliados)</div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="metric-label">Total Aliados</div>
+                        <div class="metric-value" style="color: #618ece;">8</div>
+                        <div style="font-size: 11px; color: #999; margin-top: 4px;">activos en 2 países</div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="metric-label">Conv. promedio</div>
+                        <div class="metric-value" style="color: #f4945c;">50%</div>
+                        <div style="font-size: 11px; color: #999; margin-top: 4px;">registrados a asistentes</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Correos Tab -->
+        <div id="emails" class="tab-content">
+            <div class="section">
+                <div class="section-title">Rendimiento por Email Campaña</div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Asunto del Email</th>
+                            <th style="text-align: center;">Enviados</th>
+                            <th style="text-align: center;">Open Rate</th>
+                            <th style="text-align: center;">Click Rate</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>13/06</td>
+                            <td>Invitación al workshop 18/06</td>
+                            <td style="text-align: center;">450</td>
+                            <td style="text-align: center;" class="value-primary">26%</td>
+                            <td style="text-align: center;" class="value-secondary">12%</td>
+                        </tr>
+                        <tr>
+                            <td>23/06</td>
+                            <td>Invitación al workshop 25/06</td>
+                            <td style="text-align: center;">420</td>
+                            <td style="text-align: center;" class="value-primary">24%</td>
+                            <td style="text-align: center;" class="value-secondary">14%</td>
+                        </tr>
+                        <tr>
+                            <td>17/06</td>
+                            <td>Recordatorio 1 día antes workshop</td>
+                            <td style="text-align: center;">300</td>
+                            <td style="text-align: center;" class="value-primary">68%</td>
+                            <td style="text-align: center;" class="value-secondary">45%</td>
+                        </tr>
+                        <tr>
+                            <td>18/06</td>
+                            <td>Recordatorio 10 min antes workshop</td>
+                            <td style="text-align: center;">300</td>
+                            <td style="text-align: center;" class="value-primary">72%</td>
+                            <td style="text-align: center;" class="value-secondary">58%</td>
+                        </tr>
+                        <tr>
+                            <td>18/06</td>
+                            <td>Post-workshop - Empieza los cursos</td>
+                            <td style="text-align: center;">100</td>
+                            <td style="text-align: center;" class="value-primary">65%</td>
+                            <td style="text-align: center;" class="value-secondary">52%</td>
+                        </tr>
+                        <tr>
+                            <td>19/06</td>
+                            <td>Correo a no asistentes - Sigue aprendiendo</td>
+                            <td style="text-align: center;">200</td>
+                            <td style="text-align: center;" class="value-primary">28%</td>
+                            <td style="text-align: center;" class="value-secondary">18%</td>
+                        </tr>
+                        <tr>
+                            <td>24/06</td>
+                            <td>Recordatorio 1 día antes (2do workshop)</td>
+                            <td style="text-align: center;">280</td>
+                            <td style="text-align: center;" class="value-primary">70%</td>
+                            <td style="text-align: center;" class="value-secondary">48%</td>
+                        </tr>
+                        <tr>
+                            <td>25/06</td>
+                            <td>Recordatorio 10 min antes (2do workshop)</td>
+                            <td style="text-align: center;">280</td>
+                            <td style="text-align: center;" class="value-primary">74%</td>
+                            <td style="text-align: center;" class="value-secondary">60%</td>
+                        </tr>
+                        <tr>
+                            <td>25/06</td>
+                            <td>Post-workshop - Empieza los cursos (2do)</td>
+                            <td style="text-align: center;">100</td>
+                            <td style="text-align: center;" class="value-primary">68%</td>
+                            <td style="text-align: center;" class="value-secondary">54%</td>
+                        </tr>
+                        <tr>
+                            <td>26/06</td>
+                            <td>Post-workshop - Sigue aprendiendo</td>
+                            <td style="text-align: center;">200</td>
+                            <td style="text-align: center;" class="value-primary">32%</td>
+                            <td style="text-align: center;" class="value-secondary">20%</td>
+                        </tr>
+                        <tr>
+                            <td>30/06</td>
+                            <td>Curso: Crea tu asistente con IA</td>
+                            <td style="text-align: center;">100</td>
+                            <td style="text-align: center;" class="value-primary">62%</td>
+                            <td style="text-align: center;" class="value-secondary">48%</td>
+                        </tr>
+                        <tr>
+                            <td>Auto</td>
+                            <td>Refuerzo cierre curso 1 (3 días después)</td>
+                            <td style="text-align: center;">162</td>
+                            <td style="text-align: center;" class="value-primary">52%</td>
+                            <td style="text-align: center;" class="value-secondary">35%</td>
+                        </tr>
+                        <tr>
+                            <td>Auto</td>
+                            <td>Felicidades - Continúa con 2 cursos</td>
+                            <td style="text-align: center;">162</td>
+                            <td style="text-align: center;" class="value-primary">58%</td>
+                            <td style="text-align: center;" class="value-secondary">42%</td>
+                        </tr>
+                        <tr>
+                            <td>16/07</td>
+                            <td>Define tus metas con IA (Curso 2)</td>
+                            <td style="text-align: center;">100</td>
+                            <td style="text-align: center;" class="value-primary">60%</td>
+                            <td style="text-align: center;" class="value-secondary">45%</td>
+                        </tr>
+                        <tr>
+                            <td>Auto</td>
+                            <td>Refuerzo cierre curso 2 (3 días después)</td>
+                            <td style="text-align: center;">108</td>
+                            <td style="text-align: center;" class="value-primary">50%</td>
+                            <td style="text-align: center;" class="value-secondary">32%</td>
+                        </tr>
+                        <tr>
+                            <td>Auto</td>
+                            <td>Felicidades - Continúa con 1 curso más</td>
+                            <td style="text-align: center;">108</td>
+                            <td style="text-align: center;" class="value-primary">55%</td>
+                            <td style="text-align: center;" class="value-secondary">40%</td>
+                        </tr>
+                        <tr>
+                            <td>23/07</td>
+                            <td>Data para el impacto social (Curso 3)</td>
+                            <td style="text-align: center;">100</td>
+                            <td style="text-align: center;" class="value-primary">61%</td>
+                            <td style="text-align: center;" class="value-secondary">46%</td>
+                        </tr>
+                        <tr>
+                            <td>Auto</td>
+                            <td>Refuerzo cierre curso 3 (3 días después)</td>
+                            <td style="text-align: center;">48</td>
+                            <td style="text-align: center;" class="value-primary">56%</td>
+                            <td style="text-align: center;" class="value-secondary">38%</td>
+                        </tr>
+                        <tr>
+                            <td>Auto</td>
+                            <td>Felicidades - Descarga tu certificado</td>
+                            <td style="text-align: center;">48</td>
+                            <td style="text-align: center;" class="value-primary">75%</td>
+                            <td style="text-align: center;" class="value-secondary">65%</td>
+                        </tr>
+                        <tr>
+                            <td>24/07</td>
+                            <td>Refuerzo de ruta (solo 1 curso)</td>
+                            <td style="text-align: center;">85</td>
+                            <td style="text-align: center;" class="value-primary">45%</td>
+                            <td style="text-align: center;" class="value-secondary">28%</td>
+                        </tr>
+                        <tr>
+                            <td>31/07</td>
+                            <td>Cierre de programa</td>
+                            <td style="text-align: center;">100</td>
+                            <td style="text-align: center;" class="value-primary">40%</td>
+                            <td style="text-align: center;" class="value-secondary">24%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="section">
+                <div class="explanation-box">
+                    <strong>Nota sobre métricas:</strong> Las tasas varían según la audiencia y el momento. Los recordatorios tienen mayor engagement (68-72% open rate) porque ya están interesados. Las invitaciones iniciales tienen menor tasa (24-26%) pero llegan a más personas.
+                </div>
+            </div>
+        </div>
+
+        <!-- Pauta Pagada Tab -->
+        <div id="pauta" class="tab-content">
+            <div class="section">
+                <div class="section-title">Funnel de Pauta Pagada</div>
+                <div class="funnel">
+                    <div class="funnel-step">
+                        <div class="funnel-bar" style="width: 100%;">
+                            <span>$400</span>
+                            <span>Presupuesto invertido</span>
+                        </div>
+                        <div class="funnel-percent">100%</div>
+                    </div>
+                    <div class="funnel-step">
+                        <div class="funnel-bar" style="width: 62%; background: #486ec8;">
+                            <span>156</span>
+                            <span>Clicks → Registros</span>
+                        </div>
+                        <div class="funnel-percent">39% de presupuesto</div>
+                    </div>
+                    <div class="funnel-step">
+                        <div class="funnel-bar" style="width: 52%; background: #618ece;">
+                            <span>100</span>
+                            <span>Asistentes al workshop</span>
+                        </div>
+                        <div class="funnel-percent">26% de presupuesto</div>
+                    </div>
+                    <div class="funnel-step">
+                        <div class="funnel-bar" style="width: 20%; background: #fc5c3a;">
+                            <span>16</span>
+                            <span>Certificados</span>
+                        </div>
+                        <div class="funnel-percent">4% de presupuesto</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">Métricas de Inversión Publicitaria</div>
+                <div class="metrics-grid">
+                    <div class="metric-box">
+                        <div class="metric-label">
+                            <span class="tooltip">CPC
+                                <span class="tooltiptext">Cost Per Click: dinero gastado por cada click en tu anuncio</span>
+                            </span>
+                        </div>
+                        <div class="metric-value" style="color: #2c59b7;">$2.56</div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="metric-label">
+                            <span class="tooltip">CPL
+                                <span class="tooltiptext">Cost Per Lead: dinero gastado por cada registro obtenido</span>
+                            </span>
+                        </div>
+                        <div class="metric-value" style="color: #486ec8;">$2.56</div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="metric-label">
+                            <span class="tooltip">CTR
+                                <span class="tooltiptext">Click Through Rate: % de personas que hacen click en tu anuncio</span>
+                            </span>
+                        </div>
+                        <div class="metric-value" style="color: #f4945c;">12.5%</div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="metric-label">
+                            <span class="tooltip">ROAS
+                                <span class="tooltiptext">Return on Ad Spend: retorno por cada peso invertido</span>
+                            </span>
+                        </div>
+                        <div class="metric-value" style="color: #fc5c3a;">1.8x</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="explanation-box">
+                    <strong>Explicación de acrónimos:</strong><br>
+                    • <strong>CPC ($2.56):</strong> Cada click te cuesta $2.56<br>
+                    • <strong>CPL ($2.56):</strong> Cada registro te cuesta $2.56<br>
+                    • <strong>CTR (12.5%):</strong> 12.5% de quienes ven tu anuncio hacen click<br>
+                    • <strong>ROAS (1.8x):</strong> Por cada $1 invertido generás $1.80 en valor (registros + certificaciones)
+                </div>
+            </div>
+        </div>
+
+        <!-- Google Tab -->
+        <div id="google" class="tab-content">
+            <div class="section">
+                <div class="section-title">Impacto Google Trained Program</div>
+                <div class="metrics-grid">
+                    <div class="metric-box">
+                        <div class="metric-label">Capacitadores Entrenados</div>
+                        <div class="metric-value" style="color: #2c59b7;">65</div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="metric-label">Horas de Capacitación</div>
+                        <div class="metric-value" style="color: #486ec8;">248</div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="metric-label">Certificados Completados</div>
+                        <div class="metric-value" style="color: #618ece;">48</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">ONGs Capacitadas por País</div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>País</th>
+                            <th style="text-align: center;">ONGs Capacitadas</th>
+                            <th style="text-align: center;">Capacitadores</th>
+                            <th style="text-align: center;">Certificados</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong><span class="country-badge country-ar">Argentina</span></strong></td>
+                            <td style="text-align: center;" class="value-primary">14</td>
+                            <td style="text-align: center;" class="value-secondary">32</td>
+                            <td style="text-align: center;">24</td>
+                        </tr>
+                        <tr>
+                            <td><strong><span class="country-badge country-cl">Chile</span></strong></td>
+                            <td style="text-align: center;" class="value-primary">8</td>
+                            <td style="text-align: center;" class="value-secondary">18</td>
+                            <td style="text-align: center;">12</td>
+                        </tr>
+                        <tr>
+                            <td><strong><span class="country-badge country-uy">Uruguay</span></strong></td>
+                            <td style="text-align: center;" class="value-primary">4</td>
+                            <td style="text-align: center;" class="value-secondary">10</td>
+                            <td style="text-align: center;">8</td>
+                        </tr>
+                        <tr>
+                            <td><strong><span class="country-badge country-mx">México</span></strong></td>
+                            <td style="text-align: center;" class="value-primary">2</td>
+                            <td style="text-align: center;" class="value-secondary">5</td>
+                            <td style="text-align: center;">4</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="section">
+                <div class="section-title">Distribución Regional</div>
+                <div class="bars-container">
+                    <div class="bar-item">
+                        <div class="bar-label">Argentina</div>
+                        <div class="bar-wrapper"><div class="bar-fill" style="width: 100%; background: #2c59b7;">14 ONGs</div></div>
+                    </div>
+                    <div class="bar-item">
+                        <div class="bar-label">Chile</div>
+                        <div class="bar-wrapper"><div class="bar-fill" style="width: 57%; background: #486ec8;">8 ONGs</div></div>
+                    </div>
+                    <div class="bar-item">
+                        <div class="bar-label">Uruguay</div>
+                        <div class="bar-wrapper"><div class="bar-fill" style="width: 28%; background: #618ece;">4 ONGs</div></div>
+                    </div>
+                    <div class="bar-item">
+                        <div class="bar-label">México</div>
+                        <div class="bar-wrapper"><div class="bar-fill" style="width: 14%; background: #f4945c;">2 ONGs</div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Workshops Tab -->
+        <div id="workshops" class="tab-content">
+            <div class="section">
+                <div class="section-title">Análisis de Workshops</div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th style="text-align: center;">Asistentes</th>
+                            <th style="text-align: center;">NPS</th>
+                            <th style="text-align: center;">Confianza en IA</th>
+                            <th style="text-align: center;">Duración Promedio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>18/06</strong></td>
+                            <td style="text-align: center;" class="value-primary">72</td>
+                            <td style="text-align: center;" class="value-secondary">8.4</td>
+                            <td style="text-align: center;">7.2/10</td>
+                            <td style="text-align: center;">58 min</td>
+                        </tr>
+                        <tr>
+                            <td><strong>25/06</strong></td>
+                            <td style="text-align: center;" class="value-primary">73</td>
+                            <td style="text-align: center;" class="value-secondary">8.8</td>
+                            <td style="text-align: center;">7.8/10</td>
+                            <td style="text-align: center;">61 min</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="section">
+                <div class="section-title">Métricas Globales</div>
+                <div class="metrics-grid">
+                    <div class="metric-box">
+                        <div class="metric-label">Total Asistentes</div>
+                        <div class="metric-value">145</div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="metric-label">NPS Promedio</div>
+                        <div class="metric-value" style="color: #2c59b7;">8.6</div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="metric-label">Confianza Promedio</div>
+                        <div class="metric-value" style="color: #486ec8;">7.5/10</div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="metric-label">Duración Promedio</div>
+                        <div class="metric-value" style="color: #f4945c;">59 min</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(evt, tabName) {
+            const tabcontents = document.getElementsByClassName("tab-content");
+            for (let i = 0; i < tabcontents.length; i++) {
+                tabcontents[i].classList.remove("active");
+            }
+
+            const tabbuttons = document.getElementsByClassName("tab-btn");
+            for (let i = 0; i < tabbuttons.length; i++) {
+                tabbuttons[i].classList.remove("active");
+            }
+
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
+    </script>
+</body>
+</html>
